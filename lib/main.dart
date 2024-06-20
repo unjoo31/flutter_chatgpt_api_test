@@ -17,6 +17,17 @@ void main() {
   });
 }
 
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      home: FirstPage(),
+    );
+  }
+}
+
 // generateText함수 : String자료형의 'prompt'문장을 입력 받아서 ChatGPT에게 질문하고 질문헤 해당하는 답변을 출력하는 함수
 Future<String> generateText(String prompt) async {
   final response = await http.post(
@@ -27,7 +38,8 @@ Future<String> generateText(String prompt) async {
     },
     body: jsonEncode({
       "model": "text-davinci-003",
-      'prompt': prompt,
+      'prompt':
+          "What is $prompt? Tell me like you're explaining to an eight-year-old.",
       'max_tokens': 1000,
       'temperature': 0,
       'top_p': 1,
@@ -40,15 +52,4 @@ Future<String> generateText(String prompt) async {
       jsonDecode(utf8.decode(response.bodyBytes));
 
   return newresponse['choices'][0]['text'];
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: FirstPage(),
-    );
-  }
 }
